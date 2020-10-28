@@ -1,20 +1,38 @@
 <template>
   <q-drawer
-    v-model="collapse"
+    :value="collapse"
     show-if-above
     bordered
     content-class="bg-white"
     :width="280"
   >
     <q-scroll-area class="fit">
+      <q-toolbar class="logo">
+        <q-toolbar-title class="row items-center text-grey-8">
+          <img src="@/assets/img/logo.png" />
+        </q-toolbar-title>
+      </q-toolbar>
       <q-list padding class="text-grey-8">
+        <q-expansion-item expand-separator icon="widgets" label="应用中心">
+          <q-card>
+            <q-card-section>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
+              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
+              dolorum officiis modi facere maiores architecto suscipit iste
+              eveniet doloribus ullam aliquid.
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+
         <q-item
           class="cd__drawer-item"
           v-ripple
           v-for="link in links1"
           :key="link.text"
           clickable
-          :class="{ active: active == link.text }"
+          :active="active == link.text"
+          @click="active = active == link.text ? active : link.text"
+          active-class="active"
         >
           <q-item-section avatar>
             <q-icon :name="link.icon" />
@@ -32,6 +50,9 @@
           v-for="link in links2"
           :key="link.text"
           clickable
+          :active="active == link.text"
+          @click="active = active == link.text ? active : link.text"
+          active-class="active"
         >
           <q-item-section avatar>
             <q-icon :name="link.icon" />
@@ -77,8 +98,8 @@ export default {
       leftDrawerOpen: false,
       active: "Favourites",
       links1: [
-        { icon: "web", text: "Top stories" },
-        { icon: "person", text: "For you" },
+        { icon: "web", text: "网站管理" },
+        { icon: "person", text: "用户管理" },
         { icon: "star_border", text: "Favourites" },
         { icon: "search", text: "Saved searches" }
       ],
@@ -107,6 +128,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.logo {
+  height: 64px;
+
+  img {
+    padding-left: 4px;
+  }
+}
+
 .q-item {
   &.active {
     background: #e6f1fc;

@@ -1,5 +1,5 @@
 const state = {
-  collapse: false
+  collapse: true
 }
 
 const mutations = {

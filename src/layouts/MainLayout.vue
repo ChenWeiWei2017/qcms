@@ -1,7 +1,8 @@
 <template>
-  <q-layout view="hHh lpR fFf" class="bg-grey-1">
+  <q-layout view="lHh lpR fFf" class="bg-grey-1">
     <q-header elevated class="bg-white text-grey-8" height-hint="64">
       <navbar />
+      <tabbar />
     </q-header>
 
     <sidebar />
@@ -15,12 +16,14 @@
 <script>
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Tabbar from "./Tabbar";
 
 export default {
   name: "MainLayout",
   components: {
     Navbar,
-    Sidebar
+    Sidebar,
+    Tabbar
   },
   data() {
     return {};
