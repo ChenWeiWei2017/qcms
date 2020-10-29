@@ -1,1 +1,6 @@
 // app global css in SCSS form
+#q-app {
+  color: #2c3e50;
+  // vh 为屏幕高度单位，100vh表示百分百屏幕高度
+  height: 100vh;
+}
