@@ -78,9 +78,8 @@
               label="确认修改"
               type="submit"
               color="primary"
-              size="lg"
               :loading="loading"
-              style="font-size: 15px;line-height: 40px;"
+              style="font-size: 16px;line-height: 40px;"
             >
               <template v-slot:loading>
                 <q-spinner-facebook class="on-left" />
@@ -89,8 +88,7 @@
             </q-btn>
             <q-btn
               label="返回登录"
-              size="lg"
-              style="font-size: 15px;line-height: 40px;"
+              style="font-size: 16px;line-height: 40px;"
               @click="redirectToLogin"
             >
             </q-btn>

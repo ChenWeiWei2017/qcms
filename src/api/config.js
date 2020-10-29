@@ -1,7 +1,19 @@
 import axios from 'axios'
 import store from '@/store'
-import { Dialog } from 'quasar'
+import Swal from 'sweetalert2'
 import { getToken, TokenKey } from '@/utils/auth'
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top',
+  showConfirmButton: false,
+  timer: 2000,
+  timerProgressBar: false,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -38,22 +50,28 @@ service.interceptors.response.use(
     const res = response.data
     // 判断是否成功
     if (res.code !== 20000) {
-      Message({
-        message: res.message || 'Error',
-        type: 'error',
-        duration: 3000
+      Toast.fire({
+        icon: 'error',
+        title: res.message || '操作失败'
       })
 
       if (res.code === 50003 || res.code === 50004) {
         // token失效或异地登录，提醒用户登出
-        MessageBox.confirm('您的账号已登出，请重新登录！', '确认登出', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('auth/resetToken').then(() => {
-            location.reload()
-          })
+        Swal.fire({
+          title: '登录失效',
+          text: "您的账号已登出，请重新登录！",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '确认登出',
+          cancelButtonText: '取消'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            store.dispatch('auth/resetToken').then(() => {
+              location.reload()
+            })
+          }
         })
       }
 
@@ -64,10 +82,9 @@ service.interceptors.response.use(
   },
   error => {
     console.log(error)
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 3 * 1000
+    Toast.fire({
+      icon: 'error',
+      title: error.message || '操作失败'
     })
     return Promise.reject(error)
   }

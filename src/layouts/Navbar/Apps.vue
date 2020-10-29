@@ -66,6 +66,7 @@ export default {
       border: none;
       border-radius: 8px;
       z-index: 1;
+      transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
     }
   }
 }

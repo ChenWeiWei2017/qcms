@@ -11,7 +11,7 @@
             v-model="loginForm.username"
             label="用户名"
             lazy-rules
-            :rules="[val => (val && val.length > 0) || '请输入用户名']"
+            :rules="[(val) => (val && val.length > 0) || '请输入用户名']"
           >
             <template v-slot:prepend>
               <q-icon name="person" />
@@ -23,7 +23,7 @@
             v-model="loginForm.password"
             label="密码"
             lazy-rules
-            :rules="[val => (val !== null && val !== '') || '请输入密码']"
+            :rules="[(val) => (val !== null && val !== '') || '请输入密码']"
           >
             <template v-slot:prepend>
               <q-icon name="lock" />
@@ -43,20 +43,24 @@
               v-model="loginForm.smscode"
               label="验证码"
               lazy-rules
-              :rules="[val => (val && val.length > 0) || '请输入验证码']"
+              :rules="[(val) => (val && val.length > 0) || '请输入验证码']"
             >
               <template v-slot:prepend>
                 <q-icon name="sms" />
               </template>
             </q-input>
-            <q-btn :label="smsmsg"></q-btn>
+            <q-btn
+              :label="smsmsg"
+              @click="getSmscode"
+              :disable="smsbtn"
+            ></q-btn>
           </div>
           <div class="submit-btn">
             <div class="message">
               <router-link
                 :to="{
                   path: '/forget-password',
-                  query: { username: loginForm.username }
+                  query: { username: loginForm.username },
                 }"
                 >忘记密码？</router-link
               >
@@ -65,11 +69,10 @@
               label="登录"
               push
               type="submit"
-              color="primary"
+              color="blue"
               class="full-width"
-              size="lg"
               :loading="loading"
-              style="font-size: 16px;line-height: 40px;"
+              style="font-size: 16px; line-height: 40px"
             >
               <template v-slot:loading>
                 <q-spinner-hourglass class="on-left" />
@@ -87,6 +90,9 @@
 </template>
 
 <script>
+import { isEmpty } from "@/utils/stringutil";
+import { sendCode } from "@/api/auth";
+
 export default {
   name: "Login",
   data() {
@@ -94,19 +100,84 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        smscode: ""
+        smscode: "",
       },
       loading: false,
       showPwd: true,
-      smsmsg: "获取验证码"
+      smsmsg: "获取验证码",
+      smsbtn: false,
+      redirect: undefined,
+      otherQuery: {},
     };
   },
+  watch: {
+    $route: {
+      handler: function (route) {
+        const query = route.query;
+        if (query) {
+          this.redirect = query.redirect;
+          this.otherQuery = this.getOtherQuery(query);
+        }
+      },
+      immediate: true,
+    },
+  },
   methods: {
+    getSmscode() {
+      if (isEmpty(this.loginForm.username)) {
+        this.$toast({
+          title: "请输入用户名",
+          icon: "warning",
+        });
+        return;
+      }
+      sendCode(this.loginForm.username).then(() => {
+        this.$toast.fire({
+          title: "验证码发送成功",
+          icon: "success",
+        });
+        this.smsbtn = true;
+        let count = 60;
+        let timmer = setInterval(() => {
+          if (count <= 1) {
+            this.smsbtn = false;
+            this.smsmsg = "获取验证码";
+            clearInterval(timmer);
+          } else {
+            count--;
+            this.smsmsg = `${count}s后重新获取`;
+          }
+        }, 1000);
+      });
+    },
     onSubmit() {
-      this.$swal.fire("Hello world!");
-      console.log("submit");
-    }
-  }
+      this.loading = true;
+      this.$store
+        .dispatch("auth/login", this.loginForm)
+        .then(() => {
+          this.$toast.fire({
+            title: "登录成功",
+            icon: "success",
+          });
+          this.$router.push({
+            path: this.redirect || "/",
+            query: this.otherQuery,
+          });
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== "redirect") {
+          acc[cur] = query[cur];
+        }
+        return acc;
+      }, {});
+    },
+  },
 };
 </script>
 

@@ -29,7 +29,8 @@ module.exports = function (/* ctx */) {
       'axios',
       'icons',
       'mock',
-      'swal'
+      'swal',
+      'permission'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -146,8 +147,7 @@ module.exports = function (/* ctx */) {
         'AppFullscreen',
         'Cookies',
         'LocalStorage',
-        'Loading',
-        'LoadingBar'
+        'Loading'
       ]
     },
 
