@@ -11,7 +11,7 @@
             v-model="loginForm.username"
             label="用户名"
             lazy-rules
-            :rules="[(val) => (val && val.length > 0) || '请输入用户名']"
+            :rules="[val => (val && val.length > 0) || '请输入用户名']"
           >
             <template v-slot:prepend>
               <q-icon name="person" />
@@ -23,7 +23,7 @@
             v-model="loginForm.password"
             label="密码"
             lazy-rules
-            :rules="[(val) => (val !== null && val !== '') || '请输入密码']"
+            :rules="[val => (val !== null && val !== '') || '请输入密码']"
           >
             <template v-slot:prepend>
               <q-icon name="lock" />
@@ -43,24 +43,29 @@
               v-model="loginForm.smscode"
               label="验证码"
               lazy-rules
-              :rules="[(val) => (val && val.length > 0) || '请输入验证码']"
+              :rules="[val => (val && val.length > 0) || '请输入验证码']"
             >
               <template v-slot:prepend>
                 <q-icon name="sms" />
               </template>
             </q-input>
             <q-btn
-              :label="smsmsg"
+              :label="sms.msg"
               @click="getSmscode"
-              :disable="smsbtn"
-            ></q-btn>
+              :disable="sms.disable"
+              :loading="sms.loading"
+            >
+              <template v-slot:loading>
+                <q-spinner-facebook />
+              </template>
+            </q-btn>
           </div>
           <div class="submit-btn">
             <div class="message">
               <router-link
                 :to="{
                   path: '/forget-password',
-                  query: { username: loginForm.username },
+                  query: { username: loginForm.username }
                 }"
                 >忘记密码？</router-link
               >
@@ -100,55 +105,66 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        smscode: "",
+        smscode: ""
       },
       loading: false,
       showPwd: true,
+      sms: {
+        msg: "获取验证码",
+        disable: false,
+        loading: false
+      },
       smsmsg: "获取验证码",
       smsbtn: false,
       redirect: undefined,
-      otherQuery: {},
+      otherQuery: {}
     };
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         const query = route.query;
         if (query) {
           this.redirect = query.redirect;
           this.otherQuery = this.getOtherQuery(query);
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     getSmscode() {
       if (isEmpty(this.loginForm.username)) {
-        this.$toast({
+        this.$toast.fire({
           title: "请输入用户名",
-          icon: "warning",
+          icon: "warning"
         });
         return;
       }
-      sendCode(this.loginForm.username).then(() => {
-        this.$toast.fire({
-          title: "验证码发送成功",
-          icon: "success",
+      this.sms.loading = true;
+      sendCode(this.loginForm.username)
+        .then(() => {
+          this.sms.loading = false;
+          this.$toast.fire({
+            title: "验证码发送成功",
+            icon: "success"
+          });
+          this.sms.disable = true;
+          let count = 60;
+          let timmer = setInterval(() => {
+            if (count <= 1) {
+              this.sms.disable = false;
+              this.sms.msg = "获取验证码";
+              clearInterval(timmer);
+            } else {
+              count--;
+              this.sms.msg = `${count}s后重新获取`;
+            }
+          }, 1000);
+        })
+        .catch(err => {
+          this.sms.loading = false;
         });
-        this.smsbtn = true;
-        let count = 60;
-        let timmer = setInterval(() => {
-          if (count <= 1) {
-            this.smsbtn = false;
-            this.smsmsg = "获取验证码";
-            clearInterval(timmer);
-          } else {
-            count--;
-            this.smsmsg = `${count}s后重新获取`;
-          }
-        }, 1000);
-      });
     },
     onSubmit() {
       this.loading = true;
@@ -157,11 +173,11 @@ export default {
         .then(() => {
           this.$toast.fire({
             title: "登录成功",
-            icon: "success",
+            icon: "success"
           });
           this.$router.push({
             path: this.redirect || "/",
-            query: this.otherQuery,
+            query: this.otherQuery
           });
           this.loading = false;
         })
@@ -176,8 +192,8 @@ export default {
         }
         return acc;
       }, {});
-    },
-  },
+    }
+  }
 };
 </script>
 

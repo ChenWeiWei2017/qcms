@@ -14,7 +14,7 @@ const users = {
     roles: ['admin'],
     avatar:
       'https://chenww-1259746772.cos.ap-shanghai.myqcloud.com/cmt/avatar/2-1564643605309.jpg',
-    name: '管理员'
+    name: '陈伟伟'
   },
   'editor-token': {
     roles: ['editor'],
