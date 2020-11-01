@@ -81,8 +81,8 @@ const actions = {
 
   delView({ dispatch, state }, view) {
     return new Promise(resolve => {
-      dispatch('delTag', view)
-      dispatch('delCachedView', view)
+      dispatch('delTab', view)
+      dispatch('delCachedTab', view)
       resolve({
         tabList: [...state.tabList],
         cachedTabs: [...state.cachedTabs]
@@ -148,7 +148,7 @@ const actions = {
     })
   },
 
-  updateTab({ commit }, tab) {
+  updateView({ commit }, tab) {
     commit('UPDATE_TAB', tab)
   }
 }

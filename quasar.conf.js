@@ -123,10 +123,6 @@ module.exports = function (/* ctx */) {
       config: {
         loading: {
           delay: 400
-        },
-        loadingBar: {
-          color: 'primary',
-          position: 'top'
         }
       },
 

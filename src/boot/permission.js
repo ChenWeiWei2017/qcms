@@ -24,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       next({ path: '/' })
-      LoadingBar.stop()
+      // LoadingBar.stop()
     } else {
       const hasRoles =
         store.state.auth.roles && store.state.auth.roles.length > 0
@@ -47,7 +47,7 @@ router.beforeEach(async (to, from, next) => {
             title: err || '访问失败'
           })
           next(`/login?redirect=${to.path}`)
-          LoadingBar.stop()
+          // LoadingBar.stop()
         }
       }
     }
@@ -60,12 +60,12 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
-      LoadingBar.stop()
+      // LoadingBar.stop()
     }
   }
 })
 
 router.afterEach(() => {
   // finish progress bar
-  LoadingBar.stop()
+  // LoadingBar.stop()
 })
