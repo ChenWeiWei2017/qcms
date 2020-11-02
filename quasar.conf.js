@@ -143,7 +143,8 @@ module.exports = function (/* ctx */) {
         'AppFullscreen',
         'Cookies',
         'LocalStorage',
-        'Loading'
+        'Loading',
+        'LoadingBar'
       ]
     },
 

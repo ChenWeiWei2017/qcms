@@ -1,30 +1,59 @@
 <template>
-  <q-tabs
-    v-model="active"
-    align="left"
-    inline-label
-    switch-indicator
-    class="border normal"
-  >
-    <q-tab
-      v-for="item in tabList"
-      :key="item.path"
-      :class="{ affix: item.meta && item.meta.affix }"
-      :label="
-        item.path === '/' || item.path === '/home' ? undefined : item.meta.title
-      "
-      :icon="item.path === '/' || item.path === '/home' ? 'home' : undefined"
-      :name="item.path"
-      exact
+  <div>
+    <q-tabs
+      v-model="active"
+      align="left"
+      inline-label
+      switch-indicator
+      class="border normal"
     >
-      <q-icon
-        v-if="!item.meta || !item.meta.affix"
-        name="close"
-        class="close"
-        @click.prevent.stop="closeTab(item)"
-      ></q-icon>
-    </q-tab>
-  </q-tabs>
+      <q-tab
+        v-for="item in tabList"
+        :key="item.path"
+        :class="{ affix: item.meta && item.meta.affix }"
+        :label="
+          item.path === '/' || item.path === '/home'
+            ? undefined
+            : item.meta.title
+        "
+        :icon="item.path === '/' || item.path === '/home' ? 'home' : undefined"
+        :name="item.path"
+      >
+        <q-icon
+          v-if="!item.meta || !item.meta.affix"
+          name="close"
+          class="close"
+          @click.prevent.stop="closeTab(item)"
+        ></q-icon>
+        <q-menu context-menu>
+          <q-list style="min-width: 100px;">
+            <q-item
+              v-if="item.path === active"
+              clickable
+              v-close-popup
+              @click="refreshCurrentView"
+            >
+              <q-item-section>刷新</q-item-section>
+            </q-item>
+            <q-item
+              v-if="!item.meta || !item.meta.affix"
+              clickable
+              v-close-popup
+              @click="closeTab(item)"
+            >
+              <q-item-section>关闭</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="closeOtherTabs(item)">
+              <q-item-section>关闭其它</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup @click="closeAllTabs">
+              <q-item-section>关闭全部</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-tab>
+    </q-tabs>
+  </div>
 </template>
 
 <script>
@@ -36,7 +65,10 @@ export default {
   data() {
     return {
       active: "",
-      affixTabs: []
+      affixTabs: [],
+      visible: false,
+      top: 0,
+      left: 0
     };
   },
   computed: {
@@ -115,8 +147,7 @@ export default {
           const tabIndex = this.tabList.findIndex(
             item => item.path === tab.path
           );
-          const currentActiveIndex =
-            tabIndex === this.tabList.length - 1 ? tabIndex - 1 : tabIndex + 1;
+          const currentActiveIndex = tabIndex > 0 ? tabIndex - 1 : tabIndex + 1;
           this.active = this.tabList[currentActiveIndex].path;
         }
       }
@@ -131,6 +162,21 @@ export default {
             path: "/redirect" + fullPath
           });
         });
+      });
+    },
+    closeOtherTabs(tab) {
+      this.$store.dispatch("tab/delOtherViews", tab).then(() => {
+        if (this.active !== tab.path) {
+          this.active = tab.path;
+        }
+      });
+    },
+    closeAllTabs() {
+      this.$store.dispatch("tab/delAllViews").then(({ tabList }) => {
+        if (tabList.some(item => item.path === this.active)) {
+          return;
+        }
+        this.active = tabList[tabList.length - 1].path;
       });
     }
   }

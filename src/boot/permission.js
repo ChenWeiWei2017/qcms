@@ -10,11 +10,11 @@ LoadingBar.setDefaults({
 })
 
 // 不需要拦截的白名单
-const whiteList = ['/login', '/forget', '/404']
+const whiteList = ['/login', '/forget-password', '/404']
 
 router.beforeEach(async (to, from, next) => {
   // start progress bar
-  // LoadingBar.start()
+  LoadingBar.start()
 
   // set page title
   document.title = `中国日报内容管理系统 - ${to.meta.title}`
@@ -24,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       next({ path: '/' })
-      // LoadingBar.stop()
+      LoadingBar.stop()
     } else {
       const hasRoles =
         store.state.auth.roles && store.state.auth.roles.length > 0
@@ -47,7 +47,7 @@ router.beforeEach(async (to, from, next) => {
             title: err || '访问失败'
           })
           next(`/login?redirect=${to.path}`)
-          // LoadingBar.stop()
+          LoadingBar.stop()
         }
       }
     }
@@ -60,12 +60,14 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // other pages that do not have permission to access are redirected to the login page.
       next(`/login?redirect=${to.path}`)
-      // LoadingBar.stop()
+      LoadingBar.stop()
     }
   }
 })
 
 router.afterEach(() => {
   // finish progress bar
-  // LoadingBar.stop()
+  LoadingBar.stop()
+  // quasar-cli有自带的预加载配置，当组件第一次加载时会显示loadingbar，多一个stop以关闭自动的loadingbar
+  LoadingBar.stop()
 })

@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: 'WorkspaceDone'
-}
+  name: "WorkspaceDone"
+};
 </script>
 
 <style lang="scss" scoped></style>

@@ -18,8 +18,8 @@ const moduleRouter = {
       name: 'StructManage',
       meta: {
         roles: ['admin'],
-        title: '网站结构管理',
-        icon: 'fas fa-sitemap'
+        title: '网站结构',
+        icon: 'miscellaneous_services'
       }
     },
     {
@@ -39,7 +39,7 @@ const moduleRouter = {
       meta: {
         roles: ['admin'],
         title: '栏目管理',
-        icon: 'fas fa-columns'
+        icon: 'vertical_split'
       }
     },
     {

@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: 'WorkspacePending'
-}
+  name: "WorkspacePending"
+};
 </script>
 
 <style lang="scss" scoped></style>

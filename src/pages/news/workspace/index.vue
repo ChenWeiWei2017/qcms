@@ -1,13 +1,13 @@
 <template>
-  <div>
-    工作区
-  </div>
+  <q-page padding>
+    <router-view />
+  </q-page>
 </template>
 
 <script>
 export default {
-  name: 'Workspace'
-}
+  name: "Workspace"
+};
 </script>
 
 <style lang="scss" scoped></style>

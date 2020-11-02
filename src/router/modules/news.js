@@ -15,6 +15,7 @@ const newsRouter = {
     {
       path: 'workspace',
       component: () => import('@/pages/news/workspace'),
+      redirect: 'noRedirect',
       name: 'Workspace',
       meta: {
         roles: ['editor'],
@@ -28,7 +29,7 @@ const newsRouter = {
           name: 'WorkspaceDraft',
           meta: {
             title: '草稿区',
-            icon: 'fas fa-inbox'
+            icon: 'list_alt'
           }
         },
         {
@@ -37,7 +38,7 @@ const newsRouter = {
           name: 'WorkspacePending',
           meta: {
             title: '待处理',
-            icon: 'hourglass_top'
+            icon: 'pending'
           }
         },
         {
@@ -77,7 +78,7 @@ const newsRouter = {
       meta: {
         roles: ['editor'],
         title: '社交媒体',
-        icon: 'fas fa-comments'
+        icon: 'forum'
       }
     }
   ]

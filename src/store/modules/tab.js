@@ -102,7 +102,7 @@ const actions = {
     })
   },
 
-  delOthersViews({ dispatch, state }, view) {
+  delOtherViews({ dispatch, state }, view) {
     return new Promise(resolve => {
       dispatch('delOtherTabs', view)
       dispatch('delOtherCachedTabs', view)

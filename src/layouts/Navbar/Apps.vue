@@ -10,25 +10,14 @@
     <q-menu transition-show="jump-down" transition-hide="jump-up" auto-close>
       <div class="q-pa-md apps">
         <div class="q-gutter-sm">
-          <div class="item">
-            <q-icon name="desktop_windows" class="text-primary"></q-icon>
-            <span>管理中心</span>
-          </div>
-          <div class="item">
-            <q-icon name="far fa-newspaper" class="text-secondary"></q-icon>
-            <span>内容中心</span>
-          </div>
-          <div class="item">
-            <q-icon name="security" class="text-amber"></q-icon>
-            <span>系统监控</span>
-          </div>
-          <div class="item">
-            <q-icon name="web" class="text-blue-grey"></q-icon>
-            <span>模块管理</span>
-          </div>
-          <div class="item">
-            <q-icon name="medical_services" class="text-positive"></q-icon>
-            <span>辅助系统</span>
+          <div
+            v-for="item in modules"
+            :key="item.path"
+            :class="{ active: currentModule.path === item.path, item }"
+            @click="changeModule(item)"
+          >
+            <q-icon :name="item.meta.icon" :class="item.meta.color"></q-icon>
+            <span>{{ item.meta.title }}</span>
           </div>
         </div>
       </div>
@@ -37,8 +26,44 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  name: "Apps"
+  name: "Apps",
+  computed: {
+    ...mapState({
+      modules: state =>
+        state.permission.routes.filter(item => item.meta && item.meta.module),
+      currentModule: state => state.app.currentModule
+    })
+  },
+  watch: {
+    $route: {
+      handler(val) {
+        if (
+          !this.currentModule ||
+          !val.path.startsWith(this.currentModule.path)
+        ) {
+          const change = this.modules.filter(item => {
+            return val.path.startsWith(item.path);
+          });
+          if (change && change.length) {
+            this.changeModule(change[0]);
+          } else {
+            this.changeModule(this.modules[0]);
+          }
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    changeModule(module) {
+      if (!this.currentModule || this.currentModule.path !== module.path) {
+        this.$store.dispatch("app/setCurrentModule", module);
+      }
+    }
+  }
 };
 </script>
 
@@ -60,7 +85,8 @@ export default {
       font-size: 40px;
     }
 
-    &:hover {
+    &:hover,
+    &.active {
       cursor: pointer;
       background-color: #e8f0fe;
       border: none;
