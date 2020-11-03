@@ -2,7 +2,7 @@ import http from './config'
 
 export function sendCode(username) {
   return http({
-    url: '/api/v1/auth/smscode',
+    url: '/api/v1/auth/sms-code',
     method: 'get',
     params: { username }
   })
@@ -23,10 +23,9 @@ export function logout() {
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return http({
-    url: '/api/v1/auth/info',
-    method: 'get',
-    params: { token }
+    url: '/api/v1/user/info',
+    method: 'get'
   })
 }

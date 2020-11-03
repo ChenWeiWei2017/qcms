@@ -17,6 +17,7 @@ const Toast = Swal.mixin({
 
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: '/dev-api',
   // withCredentials: true, // send cookies when cross-domain requests
   // 请求超时时间
   timeout: 3000

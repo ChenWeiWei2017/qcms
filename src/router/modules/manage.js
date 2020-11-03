@@ -15,7 +15,7 @@ const manageRouter = {
     {
       path: 'user',
       component: () => import('@/pages/manage/user/index'),
-      name: 'UserManage',
+      name: 'User',
       meta: {
         roles: ['admin'],
         title: '用户管理',
@@ -25,7 +25,7 @@ const manageRouter = {
     {
       path: 'role',
       component: () => import('@/pages/manage/role/index'),
-      name: 'RoleManage',
+      name: 'Role',
       meta: {
         roles: ['admin'],
         title: '角色管理',
@@ -35,7 +35,7 @@ const manageRouter = {
     {
       path: 'department',
       component: () => import('@/pages/manage/department/index'),
-      name: 'DepartmentManage',
+      name: 'Department',
       meta: {
         roles: ['admin'],
         title: '部门管理',

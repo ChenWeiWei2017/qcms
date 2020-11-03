@@ -4,7 +4,7 @@
     show-if-above
     bordered
     content-class="bg-white"
-    :width="280"
+    :width="250"
   >
     <q-scroll-area class="fit">
       <q-toolbar class="logo">

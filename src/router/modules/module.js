@@ -15,7 +15,7 @@ const moduleRouter = {
     {
       path: 'struct',
       component: () => import('@/pages/module/struct'),
-      name: 'StructManage',
+      name: 'Struct',
       meta: {
         roles: ['admin'],
         title: '网站结构',
@@ -25,7 +25,7 @@ const moduleRouter = {
     {
       path: 'site',
       component: () => import('@/pages/manage/site/index'),
-      name: 'SiteManage',
+      name: 'Site',
       meta: {
         roles: ['admin'],
         title: '站点管理',
@@ -35,7 +35,7 @@ const moduleRouter = {
     {
       path: 'node',
       component: () => import('@/pages/module/node'),
-      name: 'NodeManage',
+      name: 'Node',
       meta: {
         roles: ['admin'],
         title: '栏目管理',
@@ -45,7 +45,7 @@ const moduleRouter = {
     {
       path: 'template',
       component: () => import('@/pages/module/template'),
-      name: 'TemplateManage',
+      name: 'Template',
       meta: {
         roles: ['admin'],
         title: '模板管理',

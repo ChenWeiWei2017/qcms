@@ -27,12 +27,12 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password, smscode } = userInfo
+    const { username, password, smsCode } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password, smscode: smscode.trim() })
+      login({ username: username.trim(), password, smsCode: smsCode.trim() })
         .then(response => {
-          commit('SET_TOKEN', response.data.token)
-          setToken(response.data.token)
+          commit('SET_TOKEN', response.data)
+          setToken(response.data)
           resolve()
         })
         .catch(error => {
@@ -42,9 +42,9 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state, dispatch }) {
+  logout({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
+      logout()
         .then(() => {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
@@ -64,9 +64,9 @@ const actions = {
   },
 
   // get user info
-  getInfo({ commit, state }) {
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
+      getInfo()
         .then(response => {
           const { data } = response
 

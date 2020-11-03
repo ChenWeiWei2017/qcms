@@ -40,7 +40,7 @@
             <q-input
               clearable
               outlined
-              v-model="loginForm.smscode"
+              v-model="loginForm.smsCode"
               label="验证码"
               lazy-rules
               :rules="[val => (val && val.length > 0) || '请输入验证码']"
@@ -105,7 +105,7 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        smscode: ""
+        smsCode: ""
       },
       loading: false,
       showPwd: true,

@@ -15,7 +15,7 @@ const supportRouter = {
     {
       path: 'keyword',
       component: () => import('@/pages/support/keyword'),
-      name: 'KeywordManage',
+      name: 'Keyword',
       meta: {
         roles: ['admin'],
         title: '关键字管理',
@@ -25,7 +25,7 @@ const supportRouter = {
     {
       path: 'hotword',
       component: () => import('@/pages/support/hotword'),
-      name: 'HotwordManage',
+      name: 'Hotword',
       meta: {
         roles: ['admin'],
         title: '热字管理',
@@ -35,7 +35,7 @@ const supportRouter = {
     {
       path: 'sensitiveword',
       component: () => import('@/pages/support/sensitiveword'),
-      name: 'SensitivewordManage',
+      name: 'Sensitiveword',
       meta: {
         roles: ['admin'],
         title: '敏感字管理',

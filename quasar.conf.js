@@ -28,7 +28,7 @@ module.exports = function (/* ctx */) {
       'i18n',
       'axios',
       'icons',
-      'mock',
+      // 'mock',
       'swal',
       'permission'
     ],
@@ -112,8 +112,19 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
-      open: true // opens browser window automatically
+      port: 80,
+      open: true, // opens browser window automatically
+      proxy: {
+        // change xxx-api/login => mock/login
+        // detail: https://cli.vuejs.org/config/#devserver-proxy
+        '/dev-api': {
+          target: `http://127.0.0.1:8080/`,
+          changeOrigin: true,
+          pathRewrite: {
+            '^/dev-api': ''
+          }
+        }
+      },
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework

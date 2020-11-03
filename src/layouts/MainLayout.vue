@@ -7,9 +7,7 @@
 
     <sidebar />
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    <app-main />
   </q-layout>
 </template>
 
@@ -17,13 +15,15 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Tabbar from "./Tabbar";
+import AppMain from "./AppMain";
 
 export default {
   name: "MainLayout",
   components: {
     Navbar,
     Sidebar,
-    Tabbar
+    Tabbar,
+    AppMain
   },
   data() {
     return {};
@@ -34,7 +34,7 @@ export default {
 <style lang="sass">
 .cd
   &__toolbar
-    height: 64px
+    height: 58px
   &__toolbar-input
     width: 55%
   &__drawer-item
