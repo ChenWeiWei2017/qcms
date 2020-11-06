@@ -5,6 +5,11 @@
   height: 100vh;
 }
 
+.q-header,
+.q-footer {
+  z-index: 999;
+}
+
 /* fade */
 .fade-enter-active,
 .fade-leave-active {
